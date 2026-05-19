@@ -3,77 +3,176 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Elgar – Nimrod</title>
+  <title>Music for You</title>
   <style>
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
       min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.85), transparent 35%),
+        linear-gradient(135deg, #f7f1e8, #e8ded0);
+      color: #25211d;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      background: #f7f4ef;
-      color: #222;
+      padding: 22px;
     }
 
     .card {
-      width: min(92vw, 420px);
-      padding: 36px 28px;
+      width: min(94vw, 460px);
+      padding: 30px 24px;
       border-radius: 28px;
-      background: rgba(255, 255, 255, 0.86);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.10);
-      text-align: center;
+      background: rgba(255, 255, 255, 0.84);
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.12);
+      backdrop-filter: blur(10px);
     }
 
     .label {
       margin-bottom: 10px;
-      font-size: 13px;
+      font-size: 12px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: #8a7d6d;
+      text-align: center;
     }
 
     h1 {
       margin: 0;
-      font-size: 30px;
-      font-weight: 650;
+      font-size: 29px;
+      font-weight: 680;
       line-height: 1.2;
+      text-align: center;
     }
 
-    .subtitle {
-      margin: 12px 0 28px;
-      font-size: 15px;
+    .quote {
+      margin: 13px auto 26px;
+      max-width: 340px;
+      font-size: 14px;
       color: #6f665c;
-      line-height: 1.6;
+      line-height: 1.7;
+      text-align: center;
     }
 
-    audio {
+    .now {
+      padding: 18px;
+      border-radius: 22px;
+      background: #f8f3ec;
+      border: 1px solid rgba(70, 58, 45, 0.10);
+      margin-bottom: 18px;
+    }
+
+    .now-title {
+      margin: 0 0 4px;
+      font-size: 18px;
+      font-weight: 650;
+    }
+
+    .now-subtitle {
+      margin: 0 0 14px;
+      font-size: 13px;
+      color: #7d7166;
+    }
+
+    audio { width: 100%; }
+
+    .playlist {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .track {
       width: 100%;
-      margin-top: 4px;
+      border: 0;
+      border-radius: 18px;
+      padding: 14px 15px;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.70);
+      color: #2b2723;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+      border: 1px solid rgba(70, 58, 45, 0.08);
     }
 
-    .note {
-      margin-top: 20px;
+    .track:hover {
+      transform: translateY(-1px);
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+    }
+
+    .track.active {
+      background: #2f2923;
+      color: #fff;
+    }
+
+    .track-name {
+      display: block;
+      font-size: 15px;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
+    .track-desc {
+      display: block;
+      margin-top: 4px;
       font-size: 12px;
-      color: #9a9187;
-      line-height: 1.5;
+      opacity: 0.72;
+      line-height: 1.4;
     }
   </style>
 </head>
 <body>
   <main class="card">
-    <div class="label">A small piece for you</div>
-    <h1>Elgar – Nimrod</h1>
-    <p class="subtitle">from <em>Enigma Variations, Op. 36</em></p>
+    <div class="label">A small playlist for you</div>
+    <h1>Music for the road</h1>
+    <p class="quote">在路的深处，仍有风与光相候。</p>
 
-    <audio controls preload="metadata">
-      <source src="music.mp3" type="audio/mpeg" />
-      您的浏览器不支持音频播放。
-    </audio>
+    <section class="now">
+      <p class="now-title" id="nowTitle">Elgar – Nimrod</p>
+      <p class="now-subtitle" id="nowSubtitle">from Enigma Variations, Op. 36</p>
 
-    <p class="note">愿你永恒的旅途中，有风与光相候。</p>
+      <audio id="player" controls preload="metadata">
+        <source id="audioSource" src="nimrod.mp3" type="audio/mpeg" />
+        您的浏览器不支持音频播放。
+      </audio>
+    </section>
+
+    <section class="playlist" aria-label="Music playlist">
+      <button class="track active" data-src="nimrod.mp3" data-title="Elgar – Nimrod" data-subtitle="from Enigma Variations, Op. 36">
+        <span class="track-name">01. Elgar – Nimrod</span>
+        <span class="track-desc">安静、庄重、坚定的支持感</span>
+      </button>
+
+      <button class="track" data-src="song2.mp3" data-title="Song 2" data-subtitle="Second piece">
+        <span class="track-name">02. Song 2</span>
+        <span class="track-desc">把这里改成第二首歌的名字与说明</span>
+      </button>
+    </section>
   </main>
+
+  <script>
+    const player = document.getElementById("player");
+    const source = document.getElementById("audioSource");
+    const nowTitle = document.getElementById("nowTitle");
+    const nowSubtitle = document.getElementById("nowSubtitle");
+    const tracks = document.querySelectorAll(".track");
+
+    tracks.forEach((track) => {
+      track.addEventListener("click", () => {
+        tracks.forEach((item) => item.classList.remove("active"));
+        track.classList.add("active");
+
+        source.src = track.dataset.src;
+        nowTitle.textContent = track.dataset.title;
+        nowSubtitle.textContent = track.dataset.subtitle;
+
+        player.load();
+        player.play().catch(() => {});
+      });
+    });
+  </script>
 </body>
 </html>
